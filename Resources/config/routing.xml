@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing
+        http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="scriber_js_translation_dump" path="/{page}/{locale}.{_format}">
+        <default key="_controller">scriber_js_translation.controller.translation</default>
+        <default key="_page">default</default>
+        <default key="_locale">%locale%</default>
+
+        <requirement key="_format">json|js</requirement>
+    </route>
+</routes>
