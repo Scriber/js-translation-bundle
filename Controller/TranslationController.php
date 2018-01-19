@@ -1,6 +1,7 @@
 <?php
 namespace Scriber\Bundle\JsTranslationBundle\Controller;
 
+use Scriber\Bundle\JsTranslationBundle\Content\BazingaJsResponseContent;
 use Scriber\Bundle\JsTranslationBundle\Exception\InvalidPageException;
 use Scriber\Bundle\JsTranslationBundle\Translation\TranslationGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,10 +41,7 @@ class TranslationController
 
         if ($_format === 'js') {
             //Uh. Need a better way for that without templating
-            return new Response(sprintf(
-                '(function (t) { t.fromJSON(%s); })(Translator);',
-                json_encode($translations)
-            ));
+            return new Response(BazingaJsResponseContent::getContent($translations));
         }
 
         return new JsonResponse($translations);
