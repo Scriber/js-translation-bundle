@@ -10,6 +10,7 @@ class BazingaJsResponseContent implements ResponseContentInterface
      */
     public static function getContent(array $translations): string
     {
+        $translations = ['translations' => $translations];
         return sprintf(
             '(function(t){t.fromJSON(%s);})(Translator);',
             json_encode($translations)

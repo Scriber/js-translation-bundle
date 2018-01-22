@@ -18,7 +18,7 @@ class BazingaJsResponseContentTest extends TestCase
     public function testReturnedString()
     {
         $data = ['test' => 'test'];
-        $jsonData = json_encode($data);
+        $jsonData = json_encode(['translations' => $data]);
 
         $expected = '(function(t){t.fromJSON(' . $jsonData . ');})(Translator);';
         $result = BazingaJsResponseContent::getContent($data);
