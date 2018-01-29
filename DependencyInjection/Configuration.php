@@ -20,9 +20,12 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('scriber_js_translation');
 
         $rootNode
+            ->fixXmlConfig('page')
             ->children()
                 ->arrayNode('pages')
+                    ->useAttributeAsKey('name')
                     ->arrayPrototype()
+                        ->useAttributeAsKey('name')
                         ->arrayPrototype()
                             ->scalarPrototype()->end()
                         ->end()
