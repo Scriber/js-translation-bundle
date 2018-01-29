@@ -278,4 +278,64 @@ class TranslationGeneratorTest extends TestCase
         static::assertEquals($expected, $result);
     }
 
+    public function testGetTranslationsWithWildcard()
+    {
+        $locale = 'en';
+        $domain = 'test';
+        $page = 'test';
+
+        $config = [
+            'pages' => [
+                $page => [
+                    $domain => ['test.*']
+                ],
+            ],
+        ];
+
+        $domainMessages = [
+            'test' => 'test',
+            'test2' => 'test2',
+            'test.1' => '1',
+            'test.2' => '2',
+            'testing' => '3'
+        ];
+
+        $expected = [
+            $locale => [
+                $domain => [
+                    'test.1' => '1',
+                    'test.2' => '2',
+                ],
+            ],
+        ];
+
+        $catalogue = $this->createMock(MessageCatalogueInterface::class);
+
+        $this->translator
+            ->expects(static::once())
+            ->method('getCatalogue')
+            ->with($locale)
+            ->willReturn($catalogue);
+
+        $catalogue
+            ->expects(static::once())
+            ->method('all')
+            ->with($domain)
+            ->willReturn($domainMessages);
+
+        $catalogue
+            ->expects(static::once())
+            ->method('getLocale')
+            ->willReturn($locale);
+
+        $catalogue
+            ->expects(static::once())
+            ->method('getFallbackCatalogue')
+            ->willReturn(null);
+
+        $generator = new TranslationGenerator($this->translator, $config);
+
+        $result = $generator->getTranslations($page, $locale);
+        static::assertEquals($expected, $result);
+    }
 }

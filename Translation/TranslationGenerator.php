@@ -100,7 +100,9 @@ class TranslationGenerator
                 $currentMessages = [];
 
                 foreach ($keys as $key) {
-                    if (!array_key_exists($key, $previous) && array_key_exists($key, $all)) {
+                    if (substr($key, -1) === '*') {
+                        $currentMessages += $this->findWildcardMessages($key, $all, $previous);
+                    } else if (!array_key_exists($key, $previous) && array_key_exists($key, $all)) {
                         $currentMessages[$key] = $all[$key];
                     }
                 }
@@ -111,5 +113,25 @@ class TranslationGenerator
         }
 
         return $messages;
+    }
+
+    /**
+     * @param string $key
+     * @param array $all
+     * @param array $previous
+     *
+     * @return array
+     */
+    private function findWildcardMessages(string $key, array $all, array $previous)
+    {
+        $key = (string) substr($key, 0, -1);
+
+        return array_filter(
+            $all,
+            function ($v) use ($key, $previous) {
+                return !array_key_exists($v, $previous) && strpos($v, $key) === 0;
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }
