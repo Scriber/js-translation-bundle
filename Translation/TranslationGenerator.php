@@ -94,7 +94,7 @@ class TranslationGenerator
         while ($current !== null) {
             $all = $current->all($domain);
 
-            if (count($keys) === 0) {
+            if (count($keys) === 0 || in_array('*', $keys)) {
                 $currentMessages = array_diff_key($all, $previous);
             } else {
                 $currentMessages = [];
