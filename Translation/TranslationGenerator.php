@@ -28,6 +28,14 @@ class TranslationGenerator
     }
 
     /**
+     * @return array
+     */
+    public function getPages(): array
+    {
+        return array_keys($this->config['pages']);
+    }
+
+    /**
      * @param string $page
      * @param string $locale
      *
